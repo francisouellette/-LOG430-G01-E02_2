@@ -1,0 +1,7 @@
+{
+    // MQTT connection config
+    "host": "mqtt://mqtt.cgmu.io",
+    "port": 1883,
+    "default_topic": "#",
+    "topic_list_path": "config/topic_list.txt"
+}
