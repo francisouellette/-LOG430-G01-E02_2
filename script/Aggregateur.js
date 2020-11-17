@@ -1,4 +1,6 @@
 var Aggregateur = {};
+const DBUtils = require('../config/DBUtils');
+const moment = require('moment');
 
 Aggregateur.MoyenneSurTemps = function(topics){
     let total = 0 
@@ -30,5 +32,19 @@ Aggregateur.MedianeSurTemps = function(topics){
 
       console.log("Mediane sur temps " + mediane)
 }
+//2020/11/16 20:00
+Aggregateur.CreateAggregate = function(conn,end,topic,interval,agregate){  
+    console.log('test')
+    let debut = moment().format('LLL')
+    let fin = moment(end)
+    let delay = fin.diff(debut,'millisecond')
+    console.log(delay)
 
+    let timerId = setInterval(() => {
+        let current = moment().format('LLL')
+        DBUtils.AddAggregate(conn,topic,debut,end,current,interval,agregate,10)
+    }
+    , interval);
+    setTimeout(() => { clearInterval(timerId); console.log("FINI"); }, delay);
+}
 module.exports = Aggregateur;
