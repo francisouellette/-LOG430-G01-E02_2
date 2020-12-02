@@ -57,23 +57,21 @@ DBUtils.AddAggregate = function(conn, topic, start, end, current, interval, agre
   console.log("-----------------------")
   console.log("START " + start)
   console.log("END " + end)
-  console.log("CURRENT " +current)
-  console.log("INTERVAL " + interval)
-  console.log("Aggregate Value = " +agregate)
+  console.log("Time " +current)
+  console.log("Aggregate Value = " +value)
   console.log("-----------------------")
   let sql = squel.insert()
   .into("agregat")
-  .set("Topic = " + conn.escape(topic))
-  .set("Debut = " + conn.escape(start))
-  .set("Fin = " + conn.escape(end))
-  .set("Intervalle = " + conn.escape(interval))
-  .set("Agregateur = " + conn.escape(agregate))
-  .set("Valeur = " + conn.escape(value))
-  .set("Courant = " + conn.escape(current))
+  .set("Debut" , start)
+  .set("Fin " , end)
+  .set("Courant" , current)
+  .set("Intervalle" , interval)
+  .set("Agregateur" , parseInt(agregate))
+  .set("Valeur" , value)
   .toString()
-  /*conn.query(sql, function (err, result) {
+  conn.query(sql, function (err, result) {
     if (err) throw err;
-  });*/
+  });
 }
 
 //Get All topics from Name 

@@ -4,17 +4,13 @@ const moment = require('moment-timezone');
 var squel = require("squel");
 
 Aggregateur.CalculateAggregate = function(values,id){
-    console.log("WHAT")
     switch(id){
         case '1':
-            Aggregateur.MoyenneSurTemps(values)
-            break;
+            return Aggregateur.MoyenneSurTemps(values)
         case '2' : 
-            Aggregateur.TotalSurTemps(values)
-            break;
+            return Aggregateur.TotalSurTemps(values)
         case '3' : 
-            Aggregateur.MedianeSurTemps(values)
-            break;
+            return Aggregateur.MedianeSurTemps(values)
     }
 }
 Aggregateur.MoyenneSurTemps = function(values){
@@ -50,7 +46,7 @@ Aggregateur.MedianeSurTemps = function(values){
       console.log("Mediane sur temps " + mediane)
       return mediane
 }
-//2020/11/16 20:00
+
 Aggregateur.CreateAggregate = function(conn,end,topic,interval,agregate){  
     console.log('Aggregate Created')
     debut = moment(new Date()).format("YYYY-MM-DD HH:mm")
@@ -62,7 +58,6 @@ Aggregateur.CreateAggregate = function(conn,end,topic,interval,agregate){
     
     let timerId = setInterval(() => {
        DBUtils.getDataFromTopic(conn,topic,"P_Value").then(value => {
-        console.log("ARRAY LENGHT = "+ array.length + " value = "+ value)
         array.push(value)
         let agg = Aggregateur.CalculateAggregate(array, agregate)
         let current = moment().format("YYYY-MM-DD HH:mm")
