@@ -55,43 +55,40 @@ DBUtils.getTopics = function (conn) {
 }
 DBUtils.AddAggregate = function(conn, topic, start, end, current, interval, agregate, value){
   console.log("-----------------------")
-  console.log(start)
-  console.log(end)
-  console.log(current)
-  console.log(interval)
-  console.log(agregate)
+  console.log("START " + start)
+  console.log("END " + end)
+  console.log("CURRENT " +current)
+  console.log("INTERVAL " + interval)
+  console.log("Aggregate Value = " +agregate)
   console.log("-----------------------")
-
-  /*  let sql = squel.insert()
+  let sql = squel.insert()
   .into("agregat")
   .set("Topic = " + conn.escape(topic))
-  .set("Debut = " + start)
-  .set("Fin = " + end)
+  .set("Debut = " + conn.escape(start))
+  .set("Fin = " + conn.escape(end))
   .set("Intervalle = " + conn.escape(interval))
   .set("Agregateur = " + conn.escape(agregate))
   .set("Valeur = " + conn.escape(value))
   .set("Courant = " + conn.escape(current))
   .toString()
-  console.log(sql)
   /*conn.query(sql, function (err, result) {
     if (err) throw err;
   });*/
 }
 
 //Get All topics from Name 
-DBUtils.getDataFromTopic = function (conn, name, start, end) {
+DBUtils.getDataFromTopic = function (conn, topic, data){
   let sql = squel.select()
     .from("payload")
-    .where("Topic = " + conn.escape(name))
-    .where("P_CreateUtc BETWEEN ? and ?", start, end)
-
+    .where("Topic = " + conn.escape(topic))
     .toString()
   return new Promise(function (resolve, reject) {
     conn.query(sql, function (err, rows) {
       if (rows === undefined) {
         reject(new Error("Error rows is undefined"));
       } else {
-        resolve(JSON.parse(JSON.stringify(rows)))
+        let json = JSON.parse(JSON.stringify(rows))
+        resolve(json[0][data])
       }
     }
     )
